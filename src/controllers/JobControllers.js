@@ -3,19 +3,23 @@ const JobUtils = require('../utils/JobUtils')
 const Profile = require('../model/Profile')
 
 module.exports = {
-  save(req, res) {
-    const jobs = Job.GetJobData()
+  async save(req, res) {
+    const jobs = await Job.GetJobData()
     //Criando ID para os jobs
     const lastId = jobs[jobs.length - 1]?.id || 0 //.length - traz o total de arrays -1 pq o array  começça pelo numero 0 // ? se existir, senao esquece
 
     //push - para add aos jobs autom.
-    jobs.push({
+
+    Job.create({
+      // O model é o unico que deve fazer as alteraçãoe dos dados. Entao criamo no Job.js uma função "create(newJob)" que atualiza os os dados do Jobs diretamente pelo model, aq fazemos apenas a requisição
       id: lastId + 1,
       name: req.body.name,
       'daily-hours': req.body['daily-hours'],
       'total-hours': req.body['total-hours'],
       created_at: Date.now() //atribuindo uma data de agora
     })
+
+    jobs.push()
 
     return res.redirect('/') //depois redireciona para o /
   },

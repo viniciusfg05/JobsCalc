@@ -1,7 +1,7 @@
 const Database = require('../db/config')
 
 module.exports = {
-  async getData() {
+  async get() {
     const db = await Database()
 
     const data = await db.get(`SELECT * FROM profile`)
@@ -15,7 +15,7 @@ module.exports = {
       'days-per-week': data.days_per_week,
       'hours-per-day': data.hours_per_day,
       'vacation-per-year': data.vacation_per_year,
-      'value-hours': data.value_hours
+      'value-hour': data.value_hour
     }
   },
 
@@ -29,7 +29,7 @@ module.exports = {
       days_per_week = ${newData['days-per-week']},
       hours_per_day = ${newData['hours-per-day']},
       vacation_per_year = ${newData['vacation-per-year']},
-      value_hours = ${newData['value-hours']},
+      value_hour = ${newData['value-hour']}
       `)
 
     await db.close()
