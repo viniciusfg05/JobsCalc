@@ -19,5 +19,13 @@ let data = [
 module.exports = {
   GetJobData() {
     return data
+  },
+  uptadedjobs(newJob) {
+    data = newJob
+  },
+  delete(id) {
+    //filter() - se encontrar ele vai tirar da função
+    //como o filter ele retira se for verdadeiro entao temos que ver se o job.id é diferente de jobId
+    data = data.filter(job => Number(job.id) !== Number(id))
   }
 }

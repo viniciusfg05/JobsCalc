@@ -3,26 +3,6 @@ const JobUtils = require('../utils/JobUtils')
 const Profile = require('../model/Profile')
 
 module.exports = {
-  index(req, res) {
-    const jobs = Job.GetJobData() // retorna data job
-    const profile = Profile.getData() // retorna data de profile
-    //
-    const updatedJobs = jobs.map(job => {
-      //
-      const remaining = JobUtils.remainingDays(job) //usando a função que conta os dias restantes
-      const status = remaining <= 0 ? 'done' : 'progress'
-
-      return {
-        ...job,
-        remaining,
-        status,
-        budget: JobUtils.calcutateBudget(job, profile['value-hours'])
-      }
-    })
-
-    return res.render('index', { jobs: updatedJobs }) //agora o valor de jobs é uptadedjobs
-  },
-  //
   save(req, res) {
     const jobs = Job.GetJobData()
     //Criando ID para os jobs
@@ -85,7 +65,8 @@ module.exports = {
       'daily-hours': req.body['daily-hours'] //dados enviando pelo formulario
     }
 
-    Job.data = Job.data.map(job => {
+    const newJobs = jobs.map(job => {
+      //
       if (Number(job.id) === Number(jobId)) {
         job = updateJob
       }
@@ -93,13 +74,14 @@ module.exports = {
       return job
     })
 
+    Job.uptadedjobs(newJobs)
+
     res.redirect('/job/' + jobId)
   },
   delete(req, res) {
     const jobId = req.params.id //esse id é o msm da rota
-    //filter() - se encontrar ele vai tirar da função
-    //como o filter ele retira se for verdadeiro entao temos que ver se o job.id é diferente de jobId
-    Job.data = Job.data.filter(job => Number(job.id) !== Number(jobId))
+
+    Job.delete(jobId)
 
     return res.redirect('/')
   }
