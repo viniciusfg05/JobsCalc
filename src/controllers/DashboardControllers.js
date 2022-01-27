@@ -4,7 +4,7 @@ const JobUtils = require('../utils/JobUtils')
 
 module.exports = {
   async index(req, res) {
-    const jobs = Job.GetJobData() // retorna data job
+    const jobs = await Job.GetJobData() // retorna data job
     const profile = await Profile.getData() // retorna data de profile
     //
 

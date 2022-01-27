@@ -5,7 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="theme-color" content="#41414C" />
-    <link rel="shortcut icon" href="images/favicon.png" type="image/png" />
+    <link rel="shortcut icon" href="/images/favicon.png" type="image/png" />
     <title>JobsCalc</title>
 
     <link rel="stylesheet" href="/styles/main.css" />
@@ -22,8 +22,9 @@
       rel="stylesheet"
     />
   </head>
-  <%- include("parts/page-header", {title: "Adicionar novo Job"}) %>
 
+  <body id="page-job">
+    <%- include('parts/page-header', { title: 'Adicionar Novo Job' }) %>
 
     <div class="container flex animate-up delay-2">
       <main>
@@ -74,9 +75,9 @@
           >
             Salvar
           </button>
-          <a href="index.html" class="button gray">
+          <a href="/" class="button gray">
             <img
-              src="./images/trash-24.svg"
+              src="/images/trash-24.svg"
               alt="Cancelar cadastro"
               title="Cancelar cadastro"
             />

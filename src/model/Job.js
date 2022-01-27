@@ -1,34 +1,61 @@
-let data = [
-  //Estrutura de dados jobs
-  {
-    id: 1,
-    name: 'Pizzaria Guloso',
-    'daily-hours': 5,
-    'total-hours': 60,
-    created_at: Date.now()
-  },
-  {
-    id: 2,
-    name: 'OneTwo Project',
-    'daily-hours': 4,
-    'total-hours': 65,
-    created_at: Date.now()
-  }
-]
+const Database = require('../db/config')
 
 module.exports = {
-  GetJobData() {
-    return data
+  async GetJobData() {
+    const db = await Database()
+
+    const jobs = await db.all(`SELECT * FROM jobs`)
+
+    await db.close()
+
+    return jobs.map(job => ({
+      id: job.id,
+      name: job.name,
+      'daily-hours': job.daily_hours,
+      'total-hours': job.total_hours,
+      created_at: job.created_at
+    })) // map vai pegar intem por imtem e alterar de - para _ e retorna o novo array
   },
-  uptadedjobs(newJob) {
-    data = newJob
+
+  //
+  async uptadedjobs(updatedJob, jobId) {
+    const db = await Database()
+
+    await db.run(`UPDATE jobs SET 
+    name = "${updatedJob.name}",
+    daily_hours = ${updatedJob['daily-hours']},
+    total_hours = ${updatedJob['total-hours']}
+    WHERE id = ${jobId}`)
+
+    await db.close()
   },
-  delete(id) {
+  async delete(id) {
     //filter() - se encontrar ele vai tirar da função
     //como o filter ele retira se for verdadeiro entao temos que ver se o job.id é diferente de jobId
-    data = data.filter(job => Number(job.id) !== Number(id))
+    // data = data.filter(job => Number(job.id) !== Number(id))
+
+    const db = await Database()
+
+    db.run(`DELETE FROM jobs WHERE id = ${id}`)
+
+    await db.close()
   },
-  create(newJob) {
-    data.push(newJob)
+
+  async create(newJob) {
+    const db = await Database()
+
+    await db.run(`INSERT INTO jobs (
+      name,
+      daily_hours,
+      total_hours,
+      created_at
+    ) VALUES (
+      "${newJob.name}",
+      ${newJob['daily-hours']},
+      ${newJob['total-hours']},
+      ${newJob.created_at}
+    )`)
+
+    await db.close()
   }
 }
